@@ -51,9 +51,7 @@ def get_area_hospitals_info(name, url):
             if a and span:
                 hospital_name = a.get_text(strip=True)
                 hospital_url = a['href']
-                hospital_type = span.get_text(strip=True)
-                area_hospitals_info.append({
-                    'province_name': name,
+                somecodes
                     'area_name': area_name,
                     'hospital_name': hospital_name,
                     'hospital_url': hospital_url,
