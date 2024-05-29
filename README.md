@@ -1,5 +1,6 @@
 # data
 
+Only a sample without essential code and information
 
 ## object of the crawler
 
