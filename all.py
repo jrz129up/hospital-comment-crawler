@@ -9,20 +9,7 @@ import csv
 def get_province_urls(base_url):
     province_urls = []
     headers = {
-        'authority': 'www.haodf.com',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'accept-language': 'zh-CN,zh;q=0.9',
-        'cache-control': 'max-age=0',
-        'referer': 'https://www.haodf.com/',
-        'sec-ch-ua': '"Chromium";v="9", "Not?A_Brand";v="8"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'sec-fetch-dest': 'document',
-        'sec-fetch-mode': 'navigate',
-        'sec-fetch-site': 'same-origin',
-        'sec-fetch-user': '?1',
-        'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 SLBrowser/9.0.3.1311 SLBChan/8',
+    hidden headers
     }
     response = requests.get(base_url, headers=headers)
     if response.status_code == 200:
@@ -39,20 +26,7 @@ def get_province_urls(base_url):
 
 def get_area_hospitals_info(name, url):
     headers = {
-        'authority': 'www.haodf.com',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'accept-language': 'zh-CN,zh;q=0.9',
-        'cache-control': 'max-age=0',
-        'referer': 'https://www.haodf.com/',
-        'sec-ch-ua': '"Chromium";v="9", "Not?A_Brand";v="8"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'sec-fetch-dest': 'document',
-        'sec-fetch-mode': 'navigate',
-        'sec-fetch-site': 'same-origin',
-        'sec-fetch-user': '?1',
-        'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 SLBrowser/9.0.3.1311 SLBChan/8',
+    hidden headers
     }
     response = requests.get(url,headers=headers)
     if response.status_code != 200:
@@ -70,9 +44,7 @@ def get_area_hospitals_info(name, url):
 
     area_hospitals_info = []
 
-    for m_title_green, m_ctt_green in zip(m_title_greens, m_ctt_greens):
-        area_name = m_title_green.get_text(strip=True)
-        hospitals = m_ctt_green.find_all('li')
+    codes
         for hospital in hospitals:
             a = hospital.find('a')
             span = hospital.find('span')
@@ -96,22 +68,9 @@ def parse_hospital_id(url):
 
 def post_and_parse_comments(hospital_url, comment_type):
     hospital_id = parse_hospital_id(hospital_url)
-    post_url = "https://www.haodf.com/nhospital/pc/keshi/pingjia/ajaxGetAssessList"
+    post_url = "ajax"
     headers = {
-        'authority': 'www.haodf.com',
-        'accept': 'application/json, text/plain, */*',
-        'accept-language': 'zh-CN,zh;q=0.9',
-        'content-type': 'application/x-www-form-urlencoded',
-        'origin': 'https://www.haodf.com',
-        'sec-ch-ua': '"Chromium";v="9", "Not?A_Brand";v="8"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'same-origin',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 SLBrowser/9.0.3.1311 SLBChan/8',
-        'x-hdf-ssr': 'client',
-        'x-requested-with': 'XMLHttpRequest',
+    hidden headers
     }
 
     payload = {
@@ -167,8 +126,7 @@ def post_and_parse_comments(hospital_url, comment_type):
             results.append(comment_data)
     cleaned_results = []
     for comment_data in results:
-        cleaned_comment_data = {k: v.replace('\n', ' ').replace('\r', ' ') if isinstance(v, str) else v for k, v in comment_data.items()}
-        cleaned_results.append(cleaned_comment_data)
+        some codes
 
     return cleaned_results, total_comdata
 
@@ -186,10 +144,7 @@ def save_to_csv(results, filename):
 base_url = "https://www.haodf.com/hospital/list.html"
 total_comments_count = 0
 province_urls = get_province_urls(base_url)
-for province_name, province_url in province_urls:
-    province_subcomments_path = f'E:/人大农发硕士/pachong/subcomments/{province_name}/'
-    os.makedirs(province_subcomments_path, exist_ok=True)
-    all_hospitals = []
+essential loops:
     hospitals = get_area_hospitals_info(province_name, province_url)
     all_hospitals.extend(hospitals)
     print(province_name)
@@ -224,24 +179,24 @@ for province_name, province_url in province_urls:
             print(f"Skipped {f}: No columns to parse from file")
         except Exception as e:
             print(f"Skipped {f}: Error occurred - {e}")
-    all_comments_df.to_csv(f"E:/人大农发硕士/pachong/provcom/{province_name}.csv", index=False, encoding='utf_8_sig')
+    all_comments_df.to_csv(f"{province_name}.csv", index=False, encoding='utf_8_sig')
 
-province_comments_path = 'E:/人大农发硕士/pachong/provcom/'
+province_comments_path = 'path'
 province_files = glob.glob(os.path.join(province_comments_path, "*.csv"))
 all_comments_combined_df = pd.DataFrame()
 for file_path in province_files:
     current_province_df = pd.read_csv(file_path)
     if not current_province_df.empty:
         all_comments_combined_df = pd.concat([all_comments_combined_df, current_province_df], ignore_index=True)
-all_comments_combined_df.to_csv('E:/人大农发硕士/pachong/comments.csv', index=False, encoding='utf_8_sig')
+all_comments_combined_df.to_csv('csv', index=False, encoding='utf_8_sig')
 print('done')
 
-dfj = pd.read_csv('E:/人大农发硕士/pachong/comments.csv')
+dfj = pd.read_csv('csv')
 df_filtered = dfj[dfj['patient_name'].str.contains(r'\[.*?\]', na=False)].copy()
 df_filtered['origin_name'] = df_filtered['patient_name'].str.extract(r'\[(.*?)\]', expand=False)
 new_columns_order = ['comment_ID', 'doctor_ID', 'area_name', 'origin_name'] + [col for col in df_filtered.columns if col not in ['comment_ID', 'doctor_ID', 'area_name', 'origin_name']]
 df_filtered = df_filtered[new_columns_order]
 df_sorted = df_filtered.sort_values(by=['comment_ID'])
-df_sorted.to_csv('E:/人大农发硕士/pachong/comments1.csv', index=False)
+df_sorted.to_csv('csv', index=False)
 
 print(f'Total comments collected: {total_comments_count}')
